@@ -33,12 +33,12 @@ class DataLoadingSettings(BaseSettings):
     def remote_receiver_url(self) -> str | None:
         if self.receiver_url:
             if not self.retriver_url.startswith(("http://", "https://")):
-                return f"http://{self.retriver_url}"
+                return f"http://{self.receiver_url}"
             else:
                 return self.receiver_url
 
         if self.receiver_name and self.receiver_port:
-            return f"http://{self.retriver_name}:{str(self.receiver_port)}{self.receiver_endpoint}"
+            return f"http://{self.receiver_url}:{str(self.receiver_port)}{self.receiver_endpoint}"
 
         return None
 
