@@ -1,36 +1,34 @@
-# microservice-template
-Template repository for microservice creation
+# BSUIR website parser
 
-## Structure:
-- pre-commit config
-- ci config
-- cd config
-- basic service
+This parser scrap info from all pages on bsuir.by website except some dropped topics
 
-## Basic usage
+## Dropped topics
 
-CI runs on every push/pull to main branch, to check your changes llocally use pre-commit
-CD runs if CI on main branch finishes succesfully(for organisation)
+Some topics that we thing are not valuable in our opinion are skipped. We also collect links to files within the site in some extensions. You can find out about dropped/saved themes and extensions in limits directory.
 
-## Pre-commit
+## Data loader
 
-### To run pre-commit locally for ci checkouts:
-1. ```pip install pre-commit```
-2. ```pre-commit install```
-3. ```pre-commit run -a```
+This parser loads data to local storage or send content to other service, it's resolving using .env configuration.
 
-### !!!Warning!!!
-Pre-commit runs only on files that added to git by ```git add```
+To set up remote config provide
+```DATA_LOADER_URL```
+OR
+```
+DATA_LOADER_NAME
+DATA_LOADER_PORT
+DATA_LOADER_ENDPOINT
+```
 
-## Local running
-```docker compose up --build``` and run example.py
-
-## Chech publication history
-You can check publishing history in organisation -> packages
+To set up local loader just don't configurate remote config and provide directory for files ```DATA_STORAGE_DIR``` (this also require to use volume for local data storage)
 
 ## Using docker image
 ```
 services:
-  microservice:
-    image: ghcr.io/semantic-hallucinations/py-microservice-template:latest   # or commit sha, or tag name instead of <latest>
+  bsuir-parser:
+    image: ghcr.io/semantic-hallucinations/bsuir-site-parser:latest
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data    # only if you ran for local storaging in md files              # only if you store data in directory, else delete volumes
+    command: [ "python", "main.py" ]
 ```

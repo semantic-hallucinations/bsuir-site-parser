@@ -6,5 +6,5 @@ services:
     env_file:
       - .env
     volumes:
-      - ./data:/app/data               # only if you store data in directory, else delete volumes
+      - ./${DATA_STORAGE_DIR}  :/app/${DATA_STORAGE_DIR}               # only if you store data in directory, else delete volumes
     command: [ "python", "main.py" ]
