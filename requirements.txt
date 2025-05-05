@@ -1,4 +1,7 @@
 pydantic_settings
 pydantic
 requests
+beautifulsoup4
+markdownify
+
 organisation_utils @ git+https://github.com/semantic-hallucinations/semantic-hallucinations-utils.git

@@ -13,7 +13,7 @@ class DataLoadingSettings(BaseSettings):
         default="/", alias="DATA_LOADER_ENDPOINT"
     )
 
-    local_storage_dir: Optional[str] = Field(default="", alias="DATA_URL")
+    local_storage_dir: Optional[str] = Field(default="", alias="DATA_STORAGE_DIR")
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", extra="ignore"

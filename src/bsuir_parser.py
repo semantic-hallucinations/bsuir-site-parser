@@ -7,19 +7,19 @@ from bs4 import BeautifulSoup
 from markdownify import markdownify as md
 from organisation_utils.logging_config import logger_factory
 
-from .data_loading import (
+from data_loading import (
     DataContainer,
     DataLoader,
     LocalLoader,
     RemoteDataLoader,
     loading_settings,
 )
-from .limits import ParsingLimiter
+from limits import ParsingLimiter
 
 
 class BsuirParser:
     def __init__(self):
-        self.base_url: str = "https://www.bsuir.by/"
+        self.base_url: str = "https://www.bsuir.by"
         self.logger = logger_factory.get_logger("__parser__")
         self.urls = set()
         self.parsed_urls = set()
@@ -32,18 +32,18 @@ class BsuirParser:
         response = requests.get(url, allow_redirects=False, headers=headers)
         return BeautifulSoup(response.content, "html.parser")
 
-    def extract_links(self, soup: BeautifulSoup, section: str) -> None:
+    def extract_urls(self, soup: BeautifulSoup, section: str) -> None:
         if section := soup.find(section):
             for a in section.find_all("a", href=True):
                 url = a["href"]
                 absolute_url = urljoin(self.base_url, url)
                 if url.startswith(self.base_url):
-                    self.links.add(absolute_url)
+                    self.urls.add(absolute_url)
 
     def get_navigation_urls(self) -> None:
         soup = self.create_soup(self.base_url)
-        self.extract_links(soup, "header")
-        self.extract_links(soup, "footer")
+        self.extract_urls(soup, "header")
+        self.extract_urls(soup, "footer")
 
     def scrap_page_content(self, url: str) -> Tuple[str | None, Set[str]]:
         urls = set()
@@ -90,6 +90,7 @@ class BsuirParser:
     def parse(self) -> None:
         with ThreadPoolExecutor() as executor:
             self.logger.info("Parsing started...")
+            self.get_navigation_urls()
             self.urls.add(self.base_url)
             new_urls = set()
 

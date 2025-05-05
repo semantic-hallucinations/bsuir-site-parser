@@ -5,4 +5,6 @@ services:
     #   - data-loader
     env_file:
       - .env
-    command: [ "python", "src/main.py" ]
+    volumes:
+      - ./data:/app/data               # only if you store data in directory, else delete volumes
+    command: [ "python", "main.py" ]
