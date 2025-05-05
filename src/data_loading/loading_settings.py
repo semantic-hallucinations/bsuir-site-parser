@@ -32,7 +32,7 @@ class DataLoadingSettings(BaseSettings):
     @property
     def remote_receiver_url(self) -> str | None:
         if self.receiver_url:
-            if not self.retriver_url.startswith(("http://", "https://")):
+            if not self.receiver_url.startswith(("http://", "https://")):
                 return f"http://{self.receiver_url}"
             else:
                 return self.receiver_url
