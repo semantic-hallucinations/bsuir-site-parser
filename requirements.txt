@@ -1,5 +1,4 @@
-fastapi
-uvicorn
+pydantic_settings
 pydantic
 requests
-httpx
+organisation_utils @ git+https://github.com/semantic-hallucinations/semantic-hallucinations-utils.git

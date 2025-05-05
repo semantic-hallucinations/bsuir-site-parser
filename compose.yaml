@@ -1,6 +1,8 @@
 services:
-  microservice-template:
+  parser:
     build: .
-    ports:
-      # You can take any port you like instead of 8080 in your network
-      - "8080:8000"
+    # depends_on:
+    #   - data-loader
+    env_file:
+      - .env
+    command: [ "python", "src/main.py" ]
