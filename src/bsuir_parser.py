@@ -59,21 +59,21 @@ class BsuirParser:
                 element.decompose()
 
             for a in main_content.find_all("a", href=True):
-                url = a["href"]
-                url = urljoin(self.base_url, url).strip().lower()
-                if url.startswith("javascript:"):
+                new_url = a["href"]
+                new_url = urljoin(self.base_url, new_url).strip().lower()
+                if new_url.startswith("javascript:"):
                     del a["href"]
                 else:
-                    a["href"] = url
+                    a["href"] = new_url
 
-                if url.startswith(self.base_url):
-                    if ParsingLimiter.in_save_extensions(url):
+                if new_url.startswith(self.base_url):
+                    if ParsingLimiter.in_save_extensions(new_url):
                         continue
 
                     a.replace_with(a.get_text(separator=" ", strip=True))
 
-                    if not ParsingLimiter.in_drop_extensions(url):
-                        urls.add(url)
+                    if not ParsingLimiter.in_drop_extensions(new_url):
+                        urls.add(new_url)
 
             self.logger.info(f"Scrapped data from page {url}")
             return md(str(main_content), heading_style="ATX"), urls
