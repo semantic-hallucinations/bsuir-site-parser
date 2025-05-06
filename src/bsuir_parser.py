@@ -54,14 +54,9 @@ class BsuirParser:
 
             assert main_content, "Main element was't found on page"
 
-            for img in main_content.find_all("img"):
-                img.decompose()
-
-            for breadcrumb in main_content.find_all(class_="breadcrumbs"):
-                breadcrumb.decompose()
-
-            for show_more in main_content.find_all(class_="showMore"):
-                show_more.decompose()
+            selectors = ["img", ".breadcrumbs", ".showMore"]
+            for element in main_content.select(", ".join(selectors)):
+                element.decompose()
 
             for a in main_content.find_all("a", href=True):
                 url = a["href"]
